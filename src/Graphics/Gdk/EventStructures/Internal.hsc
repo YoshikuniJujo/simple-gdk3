@@ -106,6 +106,7 @@ import Foreign.C.Enum
 import Foreign.C.Struct
 import Control.Arrow
 import Control.DeepSeq
+import Control.Exception
 import Data.Bits
 import Data.Bits.Misc
 import Data.Word
@@ -168,8 +169,8 @@ data GdkEventAny = GdkEventAny {
 
 instance NFData GdkEventAny
 
-gdkEventAny :: Sealed s GdkEventAnyRaw -> GdkEventAny
-gdkEventAny (unsafeUnseal -> r) = GdkEventAny
+gdkEventAny :: Sealed s GdkEventAnyRaw -> IO GdkEventAny
+gdkEventAny (unsafeUnseal -> r) = evaluate . force $ GdkEventAny
 	(gdkEventAnyRawType r) (gdkEventAnyRawWindow r)
 	(case gdkEventAnyRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True
