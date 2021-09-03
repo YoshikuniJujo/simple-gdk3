@@ -3,7 +3,7 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE PatternSynonyms #-}
-{-# LANGUAGE GeneralisedNewtypeDeriving #-}
+{-# LANGUAGE GeneralisedNewtypeDeriving, DeriveGeneric #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Graphics.Gdk.Windows.Internal (
@@ -83,6 +83,7 @@ module Graphics.Gdk.Windows.Internal (
 
 	) where
 
+import GHC.Generics
 import Foreign.Ptr
 import Foreign.Ptr.Misc
 import Foreign.ForeignPtr hiding (newForeignPtr, addForeignPtrFinalizer)
@@ -93,6 +94,7 @@ import Foreign.C
 import Foreign.C.Enum
 import Control.Monad
 import Control.Monad.ST
+import Control.DeepSeq
 import Control.Exception
 import Data.Bits
 import Data.Bits.Misc
@@ -124,7 +126,9 @@ data GdkWindowNeedUnref
 mkGdkWindowAutoUnref :: Ptr GdkWindowNeedUnref -> IO GdkWindowAutoUnref
 mkGdkWindowAutoUnref p = GdkWindowAutoUnref <$> newForeignPtr p (c_g_object_unref p)
 
-newtype GdkWindow = GdkWindow (Ptr GdkWindow) deriving (Show, Eq, Ord, Storable)
+newtype GdkWindow = GdkWindow (Ptr GdkWindow) deriving (Show, Eq, Ord, Generic, Storable)
+
+instance NFData GdkWindow
 
 withGdkWindowAutoUnref :: GdkWindowAutoUnref -> (GdkWindow -> IO a) -> IO ()
 withGdkWindowAutoUnref (GdkWindowAutoUnref fwnu) f = void

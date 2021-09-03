@@ -2,7 +2,7 @@
 {-# LANGUAGE BlockArguments, LambdaCase, TupleSections #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE PatternSynonyms, ViewPatterns #-}
-{-# LANGUAGE GeneralisedNewtypeDeriving #-}
+{-# LANGUAGE GeneralisedNewtypeDeriving, DeriveGeneric #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Graphics.Gdk.EventStructures.Internal (
@@ -96,6 +96,7 @@ module Graphics.Gdk.EventStructures.Internal (
 	pattern GdkWindowStateBottomTiled, pattern GdkWindowStateBottomResizable,
 	pattern GdkWindowStateLeftTiled, pattern GdkWindowStateLeftResizable ) where
 
+import GHC.Generics
 import Foreign.Ptr
 import Foreign.Ptr.Misc
 import Foreign.ForeignPtr hiding (newForeignPtr)
@@ -104,6 +105,7 @@ import Foreign.C.Types
 import Foreign.C.Enum
 import Foreign.C.Struct
 import Control.Arrow
+import Control.DeepSeq
 import Data.Bits
 import Data.Bits.Misc
 import Data.Word
@@ -162,7 +164,9 @@ struct "GdkEventAnyRaw" #{size GdkEventAny}
 data GdkEventAny = GdkEventAny {
 	gdkEventAnyType :: GdkEventType, gdkEventAnyWindow :: GdkWindow,
 	gdkEventAnySendEvent :: Bool }
-	deriving Show
+	deriving (Show, Generic)
+
+instance NFData GdkEventAny
 
 gdkEventAny :: Sealed s GdkEventAnyRaw -> GdkEventAny
 gdkEventAny (unsafeUnseal -> r) = GdkEventAny

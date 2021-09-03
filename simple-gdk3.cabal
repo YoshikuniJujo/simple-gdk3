@@ -78,6 +78,7 @@ library
       base >=4.7 && <5
     , c-enum
     , c-struct
+    , deepseq
     , exception-hierarchy
     , glib-stopgap
     , primitive
@@ -96,6 +97,7 @@ test-suite simple-gdk3-test
       base >=4.7 && <5
     , c-enum
     , c-struct
+    , deepseq
     , exception-hierarchy
     , glib-stopgap
     , primitive

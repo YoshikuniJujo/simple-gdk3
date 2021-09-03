@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE PatternSynonyms #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, DeriveGeneric #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Graphics.Gdk.EventStructures.GdkEventType (
@@ -31,13 +31,15 @@ module Graphics.Gdk.EventStructures.GdkEventType (
 	pattern GdkPadButtonPress, pattern GdkPadButtonRelease,
 	pattern GdkPadRing, pattern GdkPadStrip, pattern GdkPadGroupMode ) where
 
+import GHC.Generics
 import Foreign.Storable
 import Foreign.C.Enum
+import Control.DeepSeq
 import Data.Int
 
 #include <gdk/gdk.h>
 
-enum "GdkEventType" ''#{type GdkEventType} [''Show, ''Storable] [
+enum "GdkEventType" ''#{type GdkEventType} [''Show, ''Storable, ''Generic] [
 	("GdkNothing", #{const GDK_NOTHING}), ("GdkDelete", #{const GDK_DELETE}),
 	("GdkDestroy", #{const GDK_DESTROY}), ("GdkExpose", #{const GDK_EXPOSE}),
 	("GdkMotionNotify", #{const GDK_MOTION_NOTIFY}),
@@ -87,3 +89,5 @@ enum "GdkEventType" ''#{type GdkEventType} [''Show, ''Storable] [
 	("GdkPadStrip", #{const GDK_PAD_STRIP}),
 	("GdkPadGroupMode", #{const GDK_PAD_GROUP_MODE})
 	]
+
+instance NFData GdkEventType
