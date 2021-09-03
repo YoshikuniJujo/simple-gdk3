@@ -262,10 +262,12 @@ data GdkEventKey = GdkEventKey {
 	gdkEventKeyState :: GdkModifierTypeMultiBits,
 	gdkEventKeyKeyval :: GdkKeySym, gdkEventKeyHardwareKeycode :: Word16,
 	gdkEventKeyGroup :: Word8, gdkEventKeyIsModifier :: Bool }
-	deriving Show
+	deriving (Show, Generic)
 
-gdkEventKey :: Sealed s GdkEventKeyRaw -> GdkEventKey
-gdkEventKey (unsafeUnseal -> r) = GdkEventKey
+instance NFData GdkEventKey
+
+gdkEventKey :: Sealed s GdkEventKeyRaw -> IO GdkEventKey
+gdkEventKey (unsafeUnseal -> r) = evaluate . force $ GdkEventKey
 	(gdkEventKeyRawWindow r)
 	(case gdkEventKeyRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True

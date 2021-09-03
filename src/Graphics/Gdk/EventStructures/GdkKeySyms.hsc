@@ -7,18 +7,20 @@ File auto-generated from script tools/mkGdkKeySyms.hs using the input file
 
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE PatternSynonyms #-}
-{-# LANGUAGE GeneralisedNewtypeDeriving #-}
+{-# LANGUAGE GeneralisedNewtypeDeriving, DeriveGeneric #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Graphics.Gdk.EventStructures.GdkKeySyms where
 
+import GHC.Generics
+import Control.DeepSeq
 import Foreign.Storable
 import Foreign.C.Types
 import Foreign.C.Enum
 
 #include <gdk/gdk.h>
 
-enum "GdkKeySym" ''CUInt [''Show, ''Eq, ''Storable] [
+enum "GdkKeySym" ''CUInt [''Show, ''Eq, ''Storable, ''Generic] [
 	("GdkKey_VoidSymbol", #{const GDK_KEY_VoidSymbol}),
 	("GdkKey_BackSpace", #{const GDK_KEY_BackSpace}),
 	("GdkKey_Tab", #{const GDK_KEY_Tab}),
@@ -2297,3 +2299,5 @@ enum "GdkKeySym" ''CUInt [''Show, ''Eq, ''Storable] [
 	("GdkKey_Prev_VMode", #{const GDK_KEY_Prev_VMode}),
 	("GdkKey_LogWindowTree", #{const GDK_KEY_LogWindowTree}),
 	("GdkKey_LogGrabInfo", #{const GDK_KEY_LogGrabInfo}) ]
+
+instance NFData GdkKeySym

@@ -4,7 +4,14 @@ Memo
 * [ ] use deep seq in `Graphics.Gdk.Events` and `Graphics.Gdk.EventStructures`
 	+ [ ] `Graphics.Gdk.EventStructure`
 		- [x] `GdkEventAny`
-		- [ ] `GdkEventKey`
+		- [x] `GdkEventKey`
 		- [x] `GdkEventButton`
-		- [ ] others
-	+ [ ] `Graphics.Gdk.Events`
+		- [ ] `GdkEventScroll`
+		- [ ] `GdkEventMotion`
+		- [ ] `GdkEventVisibility`
+		- [ ] `GdkEventCrossing`
+		- [ ] `GdkEventFocus`
+		- [ ] `GdkEventConfigure`
+		- [ ] `GdkEventProperty`
+		- [ ] `GdkEventWindowState`
+		+ [ ] `Graphics.Gdk.Events`
