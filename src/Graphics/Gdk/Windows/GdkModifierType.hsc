@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE PatternSynonyms #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, DeriveGeneric #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Graphics.Gdk.Windows.GdkModifierType (
@@ -17,8 +17,10 @@ module Graphics.Gdk.Windows.GdkModifierType (
 	pattern GdkButton4Mask, pattern GdkButton5Mask,
 	pattern GdkSuperMask, pattern GdkHyperMask, pattern GdkMetaMask ) where
 
+import GHC.Generics
 import Foreign.Storable
 import Foreign.C.Enum
+import Control.DeepSeq
 import Data.Bits
 import Data.Bits.Misc
 import Data.Word
@@ -43,9 +45,11 @@ enum "GdkModifierTypeSingleBit" ''#{type GdkModifierType} [''Show, ''Read, ''Eq]
 	("GdkHyperMask", #{const GDK_HYPER_MASK}),
 	("GdkMetaMask", #{const GDK_META_MASK}) ]
 
-enum "GdkModifierTypeMultiBits" ''#{type GdkModifierType} [''Show, ''Read, ''Eq, ''Storable] [
+enum "GdkModifierTypeMultiBits" ''#{type GdkModifierType} [''Show, ''Read, ''Eq, ''Storable, ''Generic] [
 	("GdkZeroModifierMask", 0),
 	("GdkAllModifierMask", #{const GDK_MODIFIER_MASK}) ]
+
+instance NFData GdkModifierTypeMultiBits
 
 gdkModifierTypeMultiBits ::
 	[GdkModifierTypeSingleBit] -> GdkModifierTypeMultiBits

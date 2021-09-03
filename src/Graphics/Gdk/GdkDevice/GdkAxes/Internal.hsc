@@ -1,5 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE BlockArguments, LambdaCase #-}
+{-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
@@ -55,6 +56,7 @@ import Foreign.Marshal
 import Foreign.Storable
 import Foreign.C.Types
 import Foreign.C.Enum
+import Control.DeepSeq
 import Data.Bits
 import Data.Bits.Misc
 import Data.Word
@@ -67,6 +69,8 @@ import Graphics.Gdk.PropertiesAndAtoms.GdkAtom
 #include <gdk/gdk.h>
 
 newtype GdkAxes = GdkAxes (ForeignPtr CDouble) deriving Show
+
+instance NFData GdkAxes where rnf !_ = ()
 
 enum "GdkAxisUse" ''#{type GdkAxisUse} [''Show] [
 	("GdkAxisIgnore", #{const GDK_AXIS_IGNORE}),

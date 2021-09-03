@@ -5,6 +5,6 @@ Memo
 	+ [ ] `Graphics.Gdk.EventStructure`
 		- [x] `GdkEventAny`
 		- [ ] `GdkEventKey`
-		- [ ] `GdkEventButton`
+		- [x] `GdkEventButton`
 		- [ ] others
 	+ [ ] `Graphics.Gdk.Events`

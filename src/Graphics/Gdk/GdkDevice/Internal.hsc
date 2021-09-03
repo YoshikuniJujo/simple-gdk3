@@ -3,7 +3,7 @@
 {-# LANGUAGE ScopedTypeVariables, TypeApplications #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE DataKinds, KindSignatures #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, DeriveGeneric #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
@@ -52,6 +52,7 @@ module Graphics.Gdk.GdkDevice.Internal (
 
 	) where
 
+import GHC.Generics
 import Foreign.Ptr
 import Foreign.Ptr.Misc
 import Foreign.Marshal
@@ -60,6 +61,7 @@ import Foreign.C
 import Foreign.C.Enum
 import Data.Word
 import Control.Monad
+import Control.DeepSeq
 import System.IO.Unsafe
 import System.GLib.DoublyLinkedLists
 
@@ -85,13 +87,17 @@ class IsGdkDevice (d :: PK -> *) where getGdkDevice :: d pk -> GdkDevice
 newtype GdkDevice = GdkDevice (Ptr GdkDevice) deriving (Show, Storable)
 
 newtype GdkDeviceMaster (pk :: PK) = GdkDeviceMaster (Ptr GdkDevice)
-	deriving (Show, Storable)
+	deriving (Show, Storable, Generic)
+
+instance NFData (GdkDeviceMaster a)
 
 instance IsGdkDevice GdkDeviceMaster where
 	getGdkDevice (GdkDeviceMaster pd) = GdkDevice pd
 
 newtype GdkDevicePhysical (pk :: PK)  = GdkDevicePhysical (Ptr GdkDevice)
-	deriving (Show, Storable)
+	deriving (Show, Storable, Generic)
+
+instance NFData (GdkDevicePhysical a)
 
 instance IsGdkDevice GdkDevicePhysical where
 	getGdkDevice (GdkDevicePhysical pd) = GdkDevice pd

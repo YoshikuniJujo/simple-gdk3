@@ -216,7 +216,9 @@ gdkEventTypeRaw c =
 	seal . c . castForeignPtr
 
 newtype MilliSecond = MilliSecond #{type guint32}
-	deriving (Show, Eq, Ord, Storable)
+	deriving (Show, Eq, Ord, Generic, Storable)
+
+instance NFData MilliSecond
 
 ---------------------------------------------------------------------------
 -- GDK EVENT KEY                                                         --
@@ -327,13 +329,15 @@ data GdkEventButton = GdkEventButton {
 	gdkEventButtonDevice :: GdkDeviceMaster 'Pointer,
 	gdkEventButtonSourceDevice :: Maybe (GdkDevicePhysical 'Pointer),
 	gdkEventButtonXRoot, gdkEventButtonYRoot :: CDouble }
-	deriving Show
+	deriving (Show, Generic)
+
+instance NFData GdkEventButton
 
 foreign import ccall "gdk_event_get_source_device"
 	c_gdk_event_get_source_device :: Ptr re -> IO GdkDevice
 
-gdkEventButton :: Sealed s GdkEventButtonRaw -> GdkEventButton
-gdkEventButton (unsafeUnseal -> r@(GdkEventButtonRaw_ fe)) = GdkEventButton
+gdkEventButton :: Sealed s GdkEventButtonRaw -> IO GdkEventButton
+gdkEventButton (unsafeUnseal -> r@(GdkEventButtonRaw_ fe)) = evaluate . force $ GdkEventButton
 	(gdkEventButtonRawWindow r)
 	(case gdkEventButtonRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True
