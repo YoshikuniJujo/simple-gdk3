@@ -124,7 +124,7 @@ data GdkWindowNeedUnref
 mkGdkWindowAutoUnref :: Ptr GdkWindowNeedUnref -> IO GdkWindowAutoUnref
 mkGdkWindowAutoUnref p = GdkWindowAutoUnref <$> newForeignPtr p (c_g_object_unref p)
 
-newtype GdkWindow = GdkWindow (Ptr GdkWindow) deriving (Show, Storable)
+newtype GdkWindow = GdkWindow (Ptr GdkWindow) deriving (Show, Eq, Ord, Storable)
 
 withGdkWindowAutoUnref :: GdkWindowAutoUnref -> (GdkWindow -> IO a) -> IO ()
 withGdkWindowAutoUnref (GdkWindowAutoUnref fwnu) f = void
