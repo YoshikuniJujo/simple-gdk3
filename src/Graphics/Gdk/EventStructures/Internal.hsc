@@ -538,10 +538,12 @@ data GdkEventMotion = GdkEventMotion {
 	gdkEventMotionDevice :: GdkDeviceMaster 'Pointer,
 	gdkEventMotionSourceDevice :: Maybe (GdkDevicePhysical 'Pointer),
 	gdkEventMotionXRoot :: CDouble, gdkEventMotionYRoot :: CDouble }
-	deriving Show
+	deriving (Show, Generic)
 
-gdkEventMotion :: Sealed s GdkEventMotionRaw -> GdkEventMotion
-gdkEventMotion (unsafeUnseal -> r@(GdkEventMotionRaw_ fr)) = GdkEventMotion
+instance NFData GdkEventMotion
+
+gdkEventMotion :: Sealed s GdkEventMotionRaw -> IO GdkEventMotion
+gdkEventMotion (unsafeUnseal -> r@(GdkEventMotionRaw_ fr)) = evaluate . force $ GdkEventMotion
 	(gdkEventMotionRawWindow r)
 	(case gdkEventMotionRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True

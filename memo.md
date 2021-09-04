@@ -7,11 +7,10 @@ Memo
 		- [x] `GdkEventKey`
 		- [x] `GdkEventButton`
 		- [x] `GdkEventScroll`
-		- [ ] `GdkEventMotion`
+		- [x] `GdkEventMotion`
 		- [ ] `GdkEventVisibility`
 		- [ ] `GdkEventCrossing`
 		- [ ] `GdkEventFocus`
 		- [ ] `GdkEventConfigure`
 		- [ ] `GdkEventProperty`
 		- [ ] `GdkEventWindowState`
-		+ [ ] `Graphics.Gdk.Events`
