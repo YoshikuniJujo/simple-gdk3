@@ -404,12 +404,14 @@ checkGdkDeviceIsPointer d = (<$> gdkDeviceGetSourceInternal d) \case
 -- GDK EVENT SCROLL                                                      --
 ---------------------------------------------------------------------------
 
-enum "GdkScrollDirection" ''#{type GdkScrollDirection} [''Show, ''Storable] [
+enum "GdkScrollDirection" ''#{type GdkScrollDirection} [''Show, ''Storable, ''Generic] [
 	("GdkScrollUp", #{const GDK_SCROLL_UP}),
 	("GdkScrollDown", #{const GDK_SCROLL_DOWN}),
 	("GdkScrollLeft", #{const GDK_SCROLL_LEFT}),
 	("GdkScrollRight", #{const GDK_SCROLL_RIGHT}),
 	("GdkScrollSmooth", #{const GDK_SCROLL_SMOOTH}) ]
+
+instance NFData GdkScrollDirection
 
 data {-# CTYPE "gdk/gdk.h" "GdkEventScroll" #-} GdkEventScroll'
 
@@ -465,10 +467,12 @@ data GdkEventScroll = GdkEventScroll {
 	gdkEventScrollXRoot, gdkEventScrollYRoot :: CDouble,
 	gdkEventScrollDeltas :: Maybe (CDouble, CDouble),
 	gdkEventScrollIsStop :: Bool }
-	deriving Show
+	deriving (Show, Generic)
 
-gdkEventScroll :: Sealed s GdkEventScrollRaw -> GdkEventScroll
-gdkEventScroll (unsafeUnseal -> s@(GdkEventScrollRaw_ fs)) = GdkEventScroll
+instance NFData GdkEventScroll
+
+gdkEventScroll :: Sealed s GdkEventScrollRaw -> IO GdkEventScroll
+gdkEventScroll (unsafeUnseal -> s@(GdkEventScrollRaw_ fs)) = evaluate . force $ GdkEventScroll
 	(gdkEventScrollRawWindow s)
 	(case gdkEventScrollRawSendEvent s of
 		FalseInt8 -> False; TrueInt8 -> True

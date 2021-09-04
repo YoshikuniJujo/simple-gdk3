@@ -6,7 +6,7 @@ Memo
 		- [x] `GdkEventAny`
 		- [x] `GdkEventKey`
 		- [x] `GdkEventButton`
-		- [ ] `GdkEventScroll`
+		- [x] `GdkEventScroll`
 		- [ ] `GdkEventMotion`
 		- [ ] `GdkEventVisibility`
 		- [ ] `GdkEventCrossing`
