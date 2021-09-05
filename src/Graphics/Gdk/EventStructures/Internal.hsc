@@ -731,10 +731,12 @@ struct "GdkEventFocusRaw" #{size GdkEventFocus}
 data GdkEventFocus = GdkEventFocus {
 	gdkEventFocusWindow :: GdkWindow, gdkEventFocusSendEvent :: Bool,
 	gdkEventFocusIn :: Bool }
-	deriving Show
+	deriving (Show, Generic)
 
-gdkEventFocus :: Sealed s GdkEventFocusRaw -> GdkEventFocus
-gdkEventFocus (unsafeUnseal -> r) = GdkEventFocus
+instance NFData GdkEventFocus
+
+gdkEventFocus :: Sealed s GdkEventFocusRaw -> IO GdkEventFocus
+gdkEventFocus (unsafeUnseal -> r) = evaluate . force $ GdkEventFocus
 	(gdkEventFocusRawWindow r)
 	(case gdkEventFocusRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True;
@@ -772,10 +774,12 @@ data GdkEventConfigure = GdkEventConfigure {
 	gdkEventConfigureSendEvent :: Bool,
 	gdkEventConfigureX, gdkEventConfigureY :: CInt,
 	gdkEventConfigureWidth, gdkEventConfigureHeight :: CInt }
-	deriving Show
+	deriving (Show, Generic)
 
-gdkEventConfigure :: Sealed s GdkEventConfigureRaw -> GdkEventConfigure
-gdkEventConfigure (unsafeUnseal -> r) = GdkEventConfigure
+instance NFData GdkEventConfigure
+
+gdkEventConfigure :: Sealed s GdkEventConfigureRaw -> IO GdkEventConfigure
+gdkEventConfigure (unsafeUnseal -> r) = evaluate . force $ GdkEventConfigure
 	(gdkEventConfigureRawWindow r)
 	(case gdkEventConfigureRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True
@@ -792,9 +796,11 @@ pattern GdkEventGdkConfigure e <-
 -- GDK EVENT PROPERTY
 ---------------------------------------------------------------------------
 
-enum "GdkPropertyState" ''#{type GdkPropertyState} [''Show, ''Read, ''Eq, ''Storable] [
+enum "GdkPropertyState" ''#{type GdkPropertyState} [''Show, ''Read, ''Eq, ''Generic, ''Storable] [
 	("GdkPropertyNewValue", #{const GDK_PROPERTY_NEW_VALUE}),
 	("GdkPropertyDelete", #{const GDK_PROPERTY_DELETE}) ]
+
+instance NFData GdkPropertyState
 
 struct "GdkEventPropertyRaw" #{size GdkEventProperty}
 	[	("window", ''GdkWindow, [| #{peek GdkEventProperty, window} |],
@@ -817,10 +823,12 @@ data GdkEventProperty = GdkEventProperty {
 	gdkEventPropertyAtom :: GdkAtom,
 	gdkEventPropertyTime :: MilliSecond,
 	gdkEventPropertyState :: GdkPropertyState }
-	deriving Show
+	deriving (Show, Generic)
 
-gdkEventProperty :: Sealed s GdkEventPropertyRaw -> GdkEventProperty
-gdkEventProperty (unsafeUnseal -> r) = GdkEventProperty
+instance NFData GdkEventProperty
+
+gdkEventProperty :: Sealed s GdkEventPropertyRaw -> IO GdkEventProperty
+gdkEventProperty (unsafeUnseal -> r) = evaluate . force $ GdkEventProperty
 	(gdkEventPropertyRawWindow r)
 	(case gdkEventPropertyRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True

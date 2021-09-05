@@ -1,8 +1,8 @@
 Memo
 ====
 
-* [ ] use deep seq in `Graphics.Gdk.Events` and `Graphics.Gdk.EventStructures`
-	+ [ ] `Graphics.Gdk.EventStructure`
+* [x] use deep seq `Graphics.Gdk.EventStructures`
+	+ [x] `Graphics.Gdk.EventStructure`
 		- [x] `GdkEventAny`
 		- [x] `GdkEventKey`
 		- [x] `GdkEventButton`
@@ -10,7 +10,7 @@ Memo
 		- [x] `GdkEventMotion`
 		- [x] `GdkEventVisibility`
 		- [x] `GdkEventCrossing`
-		- [ ] `GdkEventFocus`
-		- [ ] `GdkEventConfigure`
-		- [ ] `GdkEventProperty`
-		- [ ] `GdkEventWindowState`
+		- [x] `GdkEventFocus`
+		- [x] `GdkEventConfigure`
+		- [x] `GdkEventProperty`
+		- [x] `GdkEventWindowState`

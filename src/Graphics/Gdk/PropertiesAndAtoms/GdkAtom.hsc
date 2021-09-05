@@ -1,20 +1,24 @@
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE PatternSynonyms, ViewPatterns #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, DeriveGeneric #-}
 {-# OPTIONS_GHC -Wall -fno-warn-tabs #-}
 
 module Graphics.Gdk.PropertiesAndAtoms.GdkAtom (
 	-- * GDK ATOM
 	GdkAtom(..), pattern GdkNone, gdkAtomIntern, gdkAtomName ) where
 
+import GHC.Generics
 import Foreign.Ptr
 import Foreign.Storable
 import Foreign.C.String
+import Control.DeepSeq
 import Data.Int
 
 #include <gdk/gdk.h>
 
-newtype GdkAtom = GdkAtom (Ptr GdkAtom) deriving (Show, Storable)
+newtype GdkAtom = GdkAtom (Ptr GdkAtom) deriving (Show, Generic, Storable)
+
+instance NFData GdkAtom
 
 pattern GdkNone :: GdkAtom
 pattern GdkNone <- GdkAtom (ptrToIntPtr -> IntPtr #{const GDK_NONE}) where
