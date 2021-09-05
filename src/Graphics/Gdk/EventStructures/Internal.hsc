@@ -846,8 +846,10 @@ pattern GdkEventGdkPropertyNotify e <-
 -- GDK EVENT WINDOW STATES
 ---------------------------------------------------------------------------
 
-enum "GdkWindowStates" ''#{type GdkWindowState} [''Show, ''Storable] [
+enum "GdkWindowStates" ''#{type GdkWindowState} [''Show, ''Generic, ''Storable] [
 	("GdkWindowStateZero", 0) ]
+
+instance NFData GdkWindowStates
 
 enum "GdkWindowState" ''#{type GdkWindowState} [''Show, ''Storable] [
 	("GdkWindowStateWithdrawn", #{const GDK_WINDOW_STATE_WITHDRAWN}),
@@ -894,10 +896,12 @@ data GdkEventWindowState = GdkEventWindowState {
 	gdkEventWindowStateWindow :: GdkWindow,
 	gdkEventWindowStateChangedMask :: GdkWindowStates,
 	gdkEventWindowStateNewWindowState :: GdkWindowStates }
-	deriving Show
+	deriving (Show, Generic)
 
-gdkEventWindowState :: Sealed s GdkEventWindowStateRaw -> GdkEventWindowState
-gdkEventWindowState (unsafeUnseal -> r) = GdkEventWindowState
+instance NFData GdkEventWindowState
+
+gdkEventWindowState :: Sealed s GdkEventWindowStateRaw -> IO GdkEventWindowState
+gdkEventWindowState (unsafeUnseal -> r) = evaluate . force $ GdkEventWindowState
 	(gdkEventWindowStateRawWindow r)
 	(gdkEventWindowStateRawChangedMask r)
 	(gdkEventWindowStateRawNewWindowState r)
