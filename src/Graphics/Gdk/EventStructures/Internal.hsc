@@ -569,10 +569,12 @@ pattern GdkEventGdkMotionNotify s <-
 -- GDK EVENT VISIBILITY                                                  --
 ---------------------------------------------------------------------------
 
-enum "GdkVisibilityState" ''#{type GdkVisibilityState} [''Show, ''Storable] [
+enum "GdkVisibilityState" ''#{type GdkVisibilityState} [''Show, ''Storable, ''Generic] [
 	("GdkVisibilityUnobscured", #{const GDK_VISIBILITY_UNOBSCURED}),
 	("GdkVisibilityPartial", #{const GDK_VISIBILITY_PARTIAL}),
 	("GdkVisibilityFullyObscured", #{const GDK_VISIBILITY_FULLY_OBSCURED}) ]
+
+instance NFData GdkVisibilityState
 
 struct "GdkEventVisibilityRaw" #{size GdkEventVisibility}
 	[	("window", ''GdkWindow,
@@ -590,10 +592,12 @@ data GdkEventVisibility = GdkEventVisibility {
 	gdkEventVisibilityWindow :: GdkWindow,
 	gdkEventVisibilitySendEvent :: Bool,
 	gdkEventVisibilityState :: GdkVisibilityState }
-	deriving Show
+	deriving (Show, Generic)
 
-gdkEventVisibility :: Sealed s GdkEventVisibilityRaw -> GdkEventVisibility
-gdkEventVisibility (unsafeUnseal -> r) = GdkEventVisibility
+instance NFData GdkEventVisibility
+
+gdkEventVisibility :: Sealed s GdkEventVisibilityRaw -> IO GdkEventVisibility
+gdkEventVisibility (unsafeUnseal -> r) = evaluate . force $ GdkEventVisibility
 	(gdkEventVisibilityRawWindow r)
 	(case gdkEventVisibilityRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True
@@ -610,7 +614,7 @@ pattern GdkEventGdkVisibilityNotify e <- GdkEvent
 -- GDK EVENT CROSSING                                                    --
 ---------------------------------------------------------------------------
 
-enum "GdkCrossingMode" ''#{type GdkCrossingMode} [''Show, ''Storable] [
+enum "GdkCrossingMode" ''#{type GdkCrossingMode} [''Show, ''Storable, ''Generic] [
 	("GdkCrossingNormal", #{const GDK_CROSSING_NORMAL}),
 	("GdkCrossingGrab", #{const GDK_CROSSING_GRAB}),
 	("GdkCrossingUngrab", #{const GDK_CROSSING_UNGRAB}),
@@ -621,13 +625,17 @@ enum "GdkCrossingMode" ''#{type GdkCrossingMode} [''Show, ''Storable] [
 	("GdkCrossingTouchEnd", #{const GDK_CROSSING_TOUCH_END}),
 	("GdkCrossingDeviceSwitch", #{const GDK_CROSSING_DEVICE_SWITCH}) ]
 
-enum "GdkNotifyType" ''#{type GdkNotifyType} [''Show, ''Storable] [
+instance NFData GdkCrossingMode
+
+enum "GdkNotifyType" ''#{type GdkNotifyType} [''Show, ''Storable, ''Generic] [
 	("GdkNotifyAncestor", #{const GDK_NOTIFY_ANCESTOR}),
 	("GdkNotifyVirtual", #{const GDK_NOTIFY_VIRTUAL}),
 	("GdkNotifyInferior", #{const GDK_NOTIFY_INFERIOR}),
 	("GdkNotifyNonlinear", #{const GDK_NOTIFY_NONLINEAR}),
 	("GdkNotifyNonlinearVirtual", #{const GDK_NOTIFY_NONLINEAR_VIRTUAL}),
 	("GdkNotifyUnknown", #{const GDK_NOTIFY_UNKNOWN}) ]
+
+instance NFData GdkNotifyType
 
 type PtrGdkWindow = Ptr GdkWindow
 
@@ -674,11 +682,13 @@ data GdkEventCrossing = GdkEventCrossing {
 	gdkEventCrossingMode :: GdkCrossingMode,
 	gdkEventCrossingDetail :: GdkNotifyType,
 	gdkEventCrossingFocus :: Bool,
-	gdkEventCrossingState :: [GdkModifierTypeSingleBit] }
-	deriving Show
+	gdkEventCrossingState :: GdkModifierTypeMultiBits }
+	deriving (Show, Generic)
 
-gdkEventCrossing :: Sealed s GdkEventCrossingRaw -> GdkEventCrossing
-gdkEventCrossing (unsafeUnseal -> r) = GdkEventCrossing
+instance NFData GdkEventCrossing
+
+gdkEventCrossing :: Sealed s GdkEventCrossingRaw -> IO GdkEventCrossing
+gdkEventCrossing (unsafeUnseal -> r) = evaluate . force $ GdkEventCrossing
 	(gdkEventCrossingRawWindow r)
 	(case gdkEventCrossingRawSendEvent r of
 		FalseInt8 -> False; TrueInt8 -> True
@@ -692,7 +702,7 @@ gdkEventCrossing (unsafeUnseal -> r) = GdkEventCrossing
 	(case gdkEventCrossingRawFocus r of
 		FalseGBoolean -> False; TrueGBoolean -> True
 		_ -> error $ "gdkEventCrossingRawFocus should be FALSE or TRUE")
-	(gdkModifierTypeSingleBitList $ gdkEventCrossingRawState r)
+	(gdkEventCrossingRawState r)
 
 toGdkWindow :: Ptr GdkWindow -> Maybe GdkWindow
 toGdkWindow = \case NullPtr -> Nothing; p -> Just $ GdkWindow p

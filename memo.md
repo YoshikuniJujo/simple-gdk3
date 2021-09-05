@@ -8,8 +8,8 @@ Memo
 		- [x] `GdkEventButton`
 		- [x] `GdkEventScroll`
 		- [x] `GdkEventMotion`
-		- [ ] `GdkEventVisibility`
-		- [ ] `GdkEventCrossing`
+		- [x] `GdkEventVisibility`
+		- [x] `GdkEventCrossing`
 		- [ ] `GdkEventFocus`
 		- [ ] `GdkEventConfigure`
 		- [ ] `GdkEventProperty`
