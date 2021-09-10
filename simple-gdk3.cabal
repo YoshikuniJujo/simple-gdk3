@@ -29,7 +29,6 @@ library
       Graphics.Gdk.Cursors.Internal
       Graphics.Gdk.EventStructures
       Graphics.Gdk.EventStructures.GdkEventType
-      Graphics.Gdk.EventStructures.GdkKeySyms
       Graphics.Gdk.EventStructures.Internal
       Graphics.Gdk.Events
       Graphics.Gdk.Exception
@@ -83,6 +82,7 @@ library
     , glib-stopgap
     , primitive
     , simple-cairo
+    , x-keysym
   default-language: Haskell2010
 
 test-suite simple-gdk3-test
@@ -103,4 +103,5 @@ test-suite simple-gdk3-test
     , primitive
     , simple-cairo
     , simple-gdk3
+    , x-keysym
   default-language: Haskell2010

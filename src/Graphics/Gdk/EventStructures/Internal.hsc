@@ -111,6 +111,7 @@ import Data.Bits
 import Data.Bits.Misc
 import Data.Word
 import Data.Int
+import Data.KeySym
 import Data.Sealed.Internal
 import System.IO.Unsafe
 
@@ -119,7 +120,6 @@ import Graphics.Gdk.GdkDevice.GdkAxes.Internal
 import {-# SOURCE #-} Graphics.Gdk.Windows.Internal
 import Graphics.Gdk.Windows.GdkModifierType
 import Graphics.Gdk.EventStructures.GdkEventType
-import Graphics.Gdk.EventStructures.GdkKeySyms
 import Graphics.Gdk.PropertiesAndAtoms.GdkAtom
 
 #include <gdk/gdk.h>
@@ -244,7 +244,7 @@ struct "GdkEventKeyRaw" #{size GdkEventKey}
 		("state", ''GdkModifierTypeMultiBits,
 			[| #{peek GdkEventKey, state} |],
 			[| #{poke GdkEventKey, state} |]),
-		("keyval", ''GdkKeySym, [| #{peek GdkEventKey, keyval} |],
+		("keyval", ''KeySym, [| #{peek GdkEventKey, keyval} |],
 			[| #{poke GdkEventKey, keyval} |]),
 		("hardwareKeycode", ''Word16,
 			[| #{peek GdkEventKey, hardware_keycode} |],
@@ -260,7 +260,7 @@ data GdkEventKey = GdkEventKey {
 	gdkEventKeyWindow :: GdkWindow, gdkEventKeySendEvent :: Bool,
 	gdkEventKeyTime :: MilliSecond,
 	gdkEventKeyState :: GdkModifierTypeMultiBits,
-	gdkEventKeyKeyval :: GdkKeySym, gdkEventKeyHardwareKeycode :: Word16,
+	gdkEventKeyKeyval :: KeySym, gdkEventKeyHardwareKeycode :: Word16,
 	gdkEventKeyGroup :: Word8, gdkEventKeyIsModifier :: Bool }
 	deriving (Show, Generic)
 

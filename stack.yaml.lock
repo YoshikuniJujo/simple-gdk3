@@ -27,6 +27,17 @@ packages:
     git: https://github.com/YoshikuniJujo/cairo-image
     commit: 905c6bf5edf2cee7be806ac5112f53d54012d5ce
 - completed:
+    name: x-keysym
+    version: 0.1.0.0
+    git: https://github.com/YoshikuniJujo/x-keysym
+    pantry-tree:
+      size: 754
+      sha256: 7d7bf5e414a57950bc89937197aefe0d38cee0c7dcff41d2846a9b94f6b3d223
+    commit: e5e069590dbea7038540b66d9545df33b185e9bf
+  original:
+    git: https://github.com/YoshikuniJujo/x-keysym
+    commit: e5e069590dbea7038540b66d9545df33b185e9bf
+- completed:
     name: glib-stopgap
     version: 0.1.0.0
     git: https://github.com/YoshikuniJujo/glib-stopgap

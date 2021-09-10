@@ -27,6 +27,7 @@ dependencies:
 - c-enum
 - c-struct
 - simple-cairo
+- x-keysym
 - glib-stopgap
 
 library:
@@ -38,7 +39,6 @@ library:
   - Graphics.Gdk.Cursors.Internal
   - Graphics.Gdk.EventStructures
   - Graphics.Gdk.EventStructures.GdkEventType
-  - Graphics.Gdk.EventStructures.GdkKeySyms
   - Graphics.Gdk.EventStructures.Internal
   - Graphics.Gdk.Events
   - Graphics.Gdk.Exception
