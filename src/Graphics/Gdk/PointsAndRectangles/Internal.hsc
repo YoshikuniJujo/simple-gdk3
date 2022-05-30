@@ -31,7 +31,7 @@ import System.GLib.Bool
 
 #include <gdk/gdk.h>
 
-struct "GdkRectangle" #{size GdkRectangle}
+struct "GdkRectangle" #{size GdkRectangle} #{alignment GdkRectangle}
 	[	("x", ''CInt, [| #{peek GdkRectangle, x} |],
 			[| #{poke GdkRectangle, x} |]),
 		("y", ''CInt, [| #{peek GdkRectangle, y} |],

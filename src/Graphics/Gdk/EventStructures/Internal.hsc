@@ -152,7 +152,7 @@ enum "GBoolean" ''#{type gboolean} [''Show, ''Storable, ''Eq, ''Num] [
 -- GDK EVENT ANY                                                         --
 ---------------------------------------------------------------------------
 
-struct "GdkEventAnyRaw" #{size GdkEventAny}
+struct "GdkEventAnyRaw" #{size GdkEventAny} #{alignment GdkEventAny}
 	[	("type", ''GdkEventType, [| #{peek GdkEventAny, type} |],
 			[| #{poke GdkEventAny, type} |]),
 		("window", ''GdkWindow, [| #{peek GdkEventAny, window} |],
@@ -233,7 +233,7 @@ foreign import capi "gdkhs.h poke_gdk_event_key_is_modifier"
 	c_poke_gdk_event_key_is_modifier ::
 		Ptr GdkEventKey' -> BoolCUInt -> IO ()
 
-struct "GdkEventKeyRaw" #{size GdkEventKey}
+struct "GdkEventKeyRaw" #{size GdkEventKey} #{alignment GdkEventKey}
 	[	("window", ''GdkWindow, [| #{peek GdkEventKey, window} |],
 			[| #{poke GdkEventKey, window} |]),
 		("sendEvent", ''BoolInt8,
@@ -294,7 +294,7 @@ pattern GdkEventGdkKeyRelease e <-
 
 type PtrCDouble = Ptr CDouble
 
-struct "GdkEventButtonRaw" #{size GdkEventButton}
+struct "GdkEventButtonRaw" #{size GdkEventButton} #{alignment GdkEventButton}
 	[	("window", ''GdkWindow, [| #{peek GdkEventButton, window} |],
 			[| #{poke GdkEventButton, window} |]),
 		("sendEvent", ''BoolInt8,
@@ -422,7 +422,7 @@ foreign import capi "gdkhs.h poke_gdk_event_scroll_is_stop"
 	c_poke_gdk_event_scroll_is_stop ::
 		Ptr GdkEventScroll' -> BoolCUInt -> IO ()
 
-struct "GdkEventScrollRaw" #{size GdkEventScroll}
+struct "GdkEventScrollRaw" #{size GdkEventScroll} #{alignment GdkEventScroll}
 	[	("window", ''GdkWindow, [| #{peek GdkEventScroll, window} |],
 			[| #{poke GdkEventScroll, window} |]),
 		("sendEvent", ''BoolInt8,
@@ -501,7 +501,7 @@ pattern GdkEventGdkScroll s <-
 -- GDK EVENT MOTION                                                      --
 ---------------------------------------------------------------------------
 
-struct "GdkEventMotionRaw" #{size GdkEventMotion}
+struct "GdkEventMotionRaw" #{size GdkEventMotion} #{alignment GdkEventMotion}
 	[	("window", ''GdkWindow, [| #{peek GdkEventMotion, window} |],
 			[| #{poke GdkEventMotion, window} |]),
 		("sendEvent", ''BoolInt8,
@@ -576,7 +576,7 @@ enum "GdkVisibilityState" ''#{type GdkVisibilityState} [''Show, ''Storable, ''Ge
 
 instance NFData GdkVisibilityState
 
-struct "GdkEventVisibilityRaw" #{size GdkEventVisibility}
+struct "GdkEventVisibilityRaw" #{size GdkEventVisibility} #{alignment GdkEventVisibility}
 	[	("window", ''GdkWindow,
 			[| #{peek GdkEventVisibility, window} |],
 			[| #{poke GdkEventVisibility, window} |]),
@@ -639,7 +639,7 @@ instance NFData GdkNotifyType
 
 type PtrGdkWindow = Ptr GdkWindow
 
-struct "GdkEventCrossingRaw" #{size GdkEventCrossing}
+struct "GdkEventCrossingRaw" #{size GdkEventCrossing} #{alignment GdkEventCrossing}
 	[	("window", ''GdkWindow, [| #{peek GdkEventCrossing, window} |],
 			[| #{poke GdkEventCrossing, window} |]),
 		("sendEvent", ''BoolInt8,
@@ -719,7 +719,7 @@ pattern GdkEventGdkLeaveNotify l <- GdkEvent
 -- GDK EVENT FOCUS                                                       --
 ---------------------------------------------------------------------------
 
-struct "GdkEventFocusRaw" #{size GdkEventFocus}
+struct "GdkEventFocusRaw" #{size GdkEventFocus} #{alignment GdkEventFocus}
 	[	("window", ''GdkWindow, [| #{peek GdkEventFocus, window} |],
 			[| #{poke GdkEventFocus, window} |]),
 		("sendEvent", ''BoolInt8, [| #{peek GdkEventFocus, send_event} |],
@@ -753,7 +753,7 @@ pattern GdkEventGdkFocusChange e <-
 -- GDK EVENT CONFIGURE                                                   --
 ---------------------------------------------------------------------------
 
-struct "GdkEventConfigureRaw" #{size GdkEventConfigure}
+struct "GdkEventConfigureRaw" #{size GdkEventConfigure} #{alignment GdkEventConfigure}
 	[	("window", ''GdkWindow, [| #{peek GdkEventConfigure, window} |],
 			[| #{poke GdkEventConfigure, window} |]),
 		("sendEvent", ''BoolInt8,
@@ -802,7 +802,7 @@ enum "GdkPropertyState" ''#{type GdkPropertyState} [''Show, ''Read, ''Eq, ''Gene
 
 instance NFData GdkPropertyState
 
-struct "GdkEventPropertyRaw" #{size GdkEventProperty}
+struct "GdkEventPropertyRaw" #{size GdkEventProperty} #{alignment GdkEventProperty}
 	[	("window", ''GdkWindow, [| #{peek GdkEventProperty, window} |],
 			[| #{poke GdkEventProperty, window} |]),
 		("sendEvent", ''BoolInt8,
@@ -880,7 +880,7 @@ gdkWindowStateCheck (GdkWindowState s) (GdkWindowStates ss) =
 gdkWindowStateList :: GdkWindowStates -> [GdkWindowState]
 gdkWindowStateList (GdkWindowStates ss) = GdkWindowState <$> separateBits 32 ss
 
-struct "GdkEventWindowStateRaw" #{size GdkEventWindowState}
+struct "GdkEventWindowStateRaw" #{size GdkEventWindowState} #{alignment GdkEventWindowState}
 	[	("window", ''GdkWindow,
 			[| #{peek GdkEventWindowState, window} |],
 			[| #{poke GdkEventWindowState, window} |]),
