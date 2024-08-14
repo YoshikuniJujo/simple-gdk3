@@ -17,7 +17,8 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: nightly-2022-05-29
+
+resolver: nightly-2024-08-13
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -47,7 +48,7 @@ extra-deps:
 - git: https://github.com/YoshikuniJujo/x-keysym
   commit: e5e069590dbea7038540b66d9545df33b185e9bf
 - git: https://github.com/YoshikuniJujo/glib-stopgap
-  commit: bdf7631858e7037d7410b4e8fde305d741c6acaa
+  commit: 429e8b95651bafaa67131a917d94581c89d1c90c
 - git: https://github.com/YoshikuniJujo/union-color.git
   commit: 5657d3a8d4d4fcd92f36493b4649824af1ded9fd
 
